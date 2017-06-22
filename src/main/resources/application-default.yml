@@ -1,0 +1,9 @@
+app:
+  redis:
+    host: vlibkd071.cloud.bankia.int
+    port: 18840
+    maxIdle: 64
+    maxTotal: 128
+    testOnBorrow: true
+    inputQueue: pfm-preprocessor-in
+    outputQueue: pfm-preprocessor-out

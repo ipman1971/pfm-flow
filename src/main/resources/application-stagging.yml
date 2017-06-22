@@ -1,0 +1,10 @@
+application-epd.ymlapp:
+  redis:
+    config:
+      host: vlibkd071.cloud.bankia.int
+      port: 18840
+    queue:
+      in:
+        - pfm-preprocessor-in
+      out:
+        - pfm-preprocessor-out
