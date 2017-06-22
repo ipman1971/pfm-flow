@@ -1,7 +1,7 @@
 app:
   redis:
     config:
-      host: vlibkd071.cloud.bankia.int
+      host: localhost
       port: 18840
     queue:
       in:

@@ -1,6 +1,6 @@
 app:
   redis:
-    host: vlibkd071.cloud.bankia.int
+    host: localhost
     port: 18840
     maxIdle: 64
     maxTotal: 128
