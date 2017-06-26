@@ -2,18 +2,23 @@ package com.ipman1971.pfm.preprocessor.integration;
 
 import com.ipman1971.pfm.preprocessor.configuration.RedisConfiguration;
 import com.ipman1971.pfm.preprocessor.configuration.RedisConfigurationProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.channel.DirectChannel;
 //import org.springframework.integration.redis.inbound.RedisQueueMessageDrivenEndpoint;
 import org.springframework.integration.redis.inbound.RedisQueueMessageDrivenEndpoint;
 import org.springframework.messaging.MessageChannel;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Created by Ipman1971 on 16/06/2017.
  */
 @Configuration
+@Slf4j
 public class PfmFlowConfiguration {
 
     @Autowired
@@ -32,12 +37,22 @@ public class PfmFlowConfiguration {
         return redisQueueMessageDrivenEndpoint;
     }
 
+    @Transformer(inputChannel = "pfmRequestChannel", outputChannel = "pfmOutputChannel")
+    public String transformBean(final byte[] input) {
+        try {
+            log.info("input " + new String(input, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            log.error("encoding doesnt supported");
+        }
+        return "";
+    }
+
     /**
      * Crea un DirectChannel general de entrada de peticiones para la cola redis
      *
      * @return
      */
-    @Bean
+    @Bean(name="pfmRequestChannel")
     public MessageChannel pfmRequestChannel() {
         return new DirectChannel();
     }
@@ -46,7 +61,7 @@ public class PfmFlowConfiguration {
      * Crea un DirecChannel general de salida a cola Redis
      * @return
      */
-    @Bean
+    @Bean(name="pfmOutputChannel")
     public MessageChannel pfmOutputChannel() {
         return new DirectChannel();
     }
@@ -55,7 +70,7 @@ public class PfmFlowConfiguration {
      * Crea un DirecChannel general de salida a cola Redis
      * @return
      */
-    @Bean
+    @Bean(name="pfmErrorChannel")
     public MessageChannel pfmErrorChannel() {
         return new DirectChannel();
     }

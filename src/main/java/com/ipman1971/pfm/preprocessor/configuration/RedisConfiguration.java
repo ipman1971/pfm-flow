@@ -24,7 +24,7 @@ public class RedisConfiguration {
      *
      * @return
      */
-    @Bean
+    @Bean()
     public JedisConnectionFactory jedisConnectionFactory() {
         JedisConnectionFactory jedisConnectionFactory= new JedisConnectionFactory();
         jedisConnectionFactory.setHostName(redisConfigurationProperties.getHost());
