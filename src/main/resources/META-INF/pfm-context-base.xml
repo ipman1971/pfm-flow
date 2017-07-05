@@ -1,0 +1,33 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Redis -->
+    <bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:host-name="${app.redis.host}" p:port="${app.redis.port}"  p:poolConfig-ref="jedisPoolConfig">
+    </bean>
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig" p:maxTotal="${app.redis.maxTotal}"
+          p:maxIdle="${app.redis.maxIdle}" p:testOnBorrow="${app.redis.testOnBorrow}" />
+
+    <!-- <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+        <property name="connectionFactory" ref="redisConnectionFactory" />
+    </bean> -->
+
+    <!-- redisTemplate -->
+    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate"
+          p:connection-factory-ref="redisConnectionFactory" />
+
+    <!-- Serializer type -->
+    <bean id="jdkSerializer" class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+
+    <bean id="stringRedisSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+
+    <!-- end of Redis -->
+
+    <import resource="classpath:META-INF/pfm-flow.xml" />
+
+</beans>

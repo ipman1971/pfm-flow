@@ -15,15 +15,15 @@ import static org.hamcrest.CoreMatchers.*;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Import(RedisConfiguration.class)
+//@Import(RedisConfiguration.class)
 public class RedisConfigurationTest {
 
-    @Autowired
-    private RedisConfiguration redisConfiguration;
-
-    @Test
-    public void jedisConnectionFactoryTest() {
-        assertThat(redisConfiguration.jedisConnectionFactory(),is(notNullValue()));
-    }
+//    @Autowired
+//    private RedisConfiguration redisConfiguration;
+//
+//    @Test
+//    public void jedisConnectionFactoryTest() {
+//        assertThat(redisConfiguration.jedisConnectionFactory(),is(notNullValue()));
+//    }
 
 }

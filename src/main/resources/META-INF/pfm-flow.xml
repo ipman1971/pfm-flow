@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-redis="http://www.springframework.org/schema/integration/redis"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+       http://www.springframework.org/schema/integration/redis http://www.springframework.org/schema/integration/redis/spring-integration-redis.xsd">
+
+    <int:channel id="requestChannel"/>
+    <int:channel id="transformChannel" />
+
+    <int-redis:queue-inbound-channel-adapter id="redisQueueInboundChannelAdapter" channel="requestChannel"
+        connection-factory="redisConnectionFactory" queue="${app.redis.inputQueue}" serializer="stringRedisSerializer" />
+
+     <int:transformer id="requestTransformer" input-channel="requestChannel" output-channel="transformChannel"
+        ref="stringPojoTransformerComponent" />
+
+    <int-redis:queue-outbound-channel-adapter id="redisQueueOutboundChannelAdapter" channel="transformChannel"
+        connection-factory="redisConnectionFactory" queue="${app.redis.outputQueue}" serializer="stringRedisSerializer" />
+
+</beans>
