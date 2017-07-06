@@ -1,0 +1,6 @@
+UserId: numeric of 12 positions, left padding with zeros
+Date of bird: 10 positions with format YYYY-MM-DD
+First name: char of 14 position with left padding  with blank spaces
+Last name: char of 16 position with left padding with blank spaces
+Sex: one char with value 'M' or 'F'
+Date of entrance in company: 10 positions with format YYYY-MM-DD

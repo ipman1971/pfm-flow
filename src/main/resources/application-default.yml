@@ -5,5 +5,8 @@ app:
     maxIdle: 64
     maxTotal: 128
     testOnBorrow: true
-    inputQueue: tas-queue-input-movimientos-cuenta-oracle
-    outputQueue: pfm-preprocessor-out
+    inputQueue: pfm-preprocessor-request
+    outputQueue: pfm-preprocessor-response
+
+server:
+    port: 8085
