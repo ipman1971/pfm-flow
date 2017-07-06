@@ -11,7 +11,7 @@
     <int:channel id="transformChannel" />
 
     <int-redis:queue-inbound-channel-adapter id="redisQueueInboundChannelAdapter" channel="requestChannel"
-        connection-factory="redisConnectionFactory" queue="${app.redis.inputQueue}" serializer="stringRedisSerializer" />
+        connection-factory="redisConnectionFactory" queue="${app.redis.inputQueue}" serializer="" />
 
      <int:transformer id="requestTransformer" input-channel="requestChannel" output-channel="transformChannel"
         ref="stringPojoTransformerComponent" />
