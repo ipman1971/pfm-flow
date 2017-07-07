@@ -16,20 +16,26 @@ public final class RawSourceParser {
     private final String rawSource;
     private static  ObjectMapper mapper;
     private final String payload;
+    private final int lengthRawSource;
 
-    private RawSourceParser(String rawSource) throws IOException {
+    private RawSourceParser(String rawSource, int lengthRawSource) throws IOException, IllegalArgumentException {
         this.rawSource=rawSource;
+        this.lengthRawSource=lengthRawSource;
         mapper= new ObjectMapper();
         payload=getPayLoad(rawSource);
     }
 
-    public static RawSourceParser of(String rawSource) throws IOException {
-        return new RawSourceParser(rawSource);
+    public static RawSourceParser of(String rawSource, int lengthRawSource) throws IOException {
+        return new RawSourceParser(rawSource, lengthRawSource);
     }
 
-    private String getPayLoad(String rawSource) throws IOException {
+    private String getPayLoad(String rawSource) throws IOException, IllegalArgumentException {
         JsonNode rootNode=mapper.readTree(rawSource);
-        return rootNode.path("message").asText();
+        String payload = rootNode.path("message").asText();
+        if(payload.length()!=lengthRawSource) {
+            throw new IllegalArgumentException("ERROR: size of rawMessage recibed: "+ rawSource.length() + "expected: "+ lengthRawSource);
+        }
+        return payload;
     }
 
     public Map<String,String> parser(Fields sourceFields) {

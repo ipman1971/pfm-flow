@@ -13,24 +13,30 @@ import static org.hamcrest.CoreMatchers.*;
  */
 public class RawSourceParserTest {
 
-    public static final String RAW_SOURCE_TEST="{\n\t\"message\":\"0000000100151959-08-19      Guoxiang       NooteboomM1987-07-02\"\n}";
+    public static final String RAW_SOURCE ="{\n\t\"message\":\"0000000100151959-08-19      Guoxiang       NooteboomM1987-07-02\"\n}";
+    public static final int LENGTH_RAW_SOURCE=63;
 
     @Test
     public void test_of() throws Exception {
-        RawSourceParser rawParser=RawSourceParser.of(RAW_SOURCE_TEST);
+        RawSourceParser rawParser=RawSourceParser.of(RAW_SOURCE,LENGTH_RAW_SOURCE);
         assertThat(rawParser,is(notNullValue()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_incorrect_rawMessage_length() throws Exception {
+        RawSourceParser rawParser=RawSourceParser.of(RAW_SOURCE,LENGTH_RAW_SOURCE-5);
     }
 
     @Test
     public void test_parser() throws Exception {
-        RawSourceParser rawParser=RawSourceParser.of(RAW_SOURCE_TEST);
+        RawSourceParser rawParser=RawSourceParser.of(RAW_SOURCE,LENGTH_RAW_SOURCE);
         assertThat(rawParser,is(notNullValue()));
 
         Map<String,String> rawMapping=rawParser.parser(createFields());
 
         assertThat(rawMapping.size(),is(equalTo(6)));
-        assertThat(rawMapping.containsKey("dni"),is(equalTo(true)));
-        assertThat(rawMapping.get("dni"),is(equalTo("000000010015")));
+        assertThat(rawMapping.containsKey("id"),is(equalTo(true)));
+        assertThat(rawMapping.get("id"),is(equalTo("000000010015")));
         assertThat(rawMapping.containsKey("birthDay"),is(equalTo(true)));
         assertThat(rawMapping.get("birthDay"),is(equalTo("1959-08-19")));
         assertThat(rawMapping.containsKey("name"),is(equalTo(true)));
@@ -45,21 +51,21 @@ public class RawSourceParserTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void test_modify_result_of_parser() throws Exception {
-        RawSourceParser rawParser=RawSourceParser.of(RAW_SOURCE_TEST);
+        RawSourceParser rawParser=RawSourceParser.of(RAW_SOURCE,LENGTH_RAW_SOURCE);
         assertThat(rawParser,is(notNullValue()));
 
         Map<String,String> rawMapping=rawParser.parser(createFields());
 
         assertThat(rawMapping.size(),is(equalTo(6)));
-        assertThat(rawMapping.containsKey("dni"),is(equalTo(true)));
-        assertThat(rawMapping.get("dni"),is(equalTo("000000010015")));
+        assertThat(rawMapping.containsKey("id"),is(equalTo(true)));
+        assertThat(rawMapping.get("id"),is(equalTo("000000010015")));
 
-        rawMapping.remove("dni");
+        rawMapping.remove("id");
     }
 
     @Test
     public void test_lenght() throws Exception {
-        RawSourceParser rawParser=RawSourceParser.of(RAW_SOURCE_TEST);
+        RawSourceParser rawParser=RawSourceParser.of(RAW_SOURCE,LENGTH_RAW_SOURCE);
         assertThat(rawParser,is(notNullValue()));
 
         assertThat(rawParser.length(createFields()),is(equalTo(63)));
@@ -67,7 +73,7 @@ public class RawSourceParserTest {
 
     private Fields createFields() {
         return Fields.create()
-                .addField("dni",FieldPosition.of(0,12))
+                .addField("id",FieldPosition.of(0,12))
                 .addField("birthDay",FieldPosition.of(12,22))
                 .addField("name",FieldPosition.of(22,36))
                 .addField("surname",FieldPosition.of(36,52))

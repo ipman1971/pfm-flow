@@ -17,6 +17,6 @@
         ref="stringPojoTransformerComponent" />
 
     <int-redis:queue-outbound-channel-adapter id="redisQueueOutboundChannelAdapter" channel="transformChannel"
-        connection-factory="redisConnectionFactory" queue="${app.redis.outputQueue}" serializer="stringRedisSerializer" />
+        connection-factory="redisConnectionFactory" queue="${app.redis.outputQueue}" serializer="" />
 
 </beans>
